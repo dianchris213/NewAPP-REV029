@@ -198,44 +198,46 @@ function Home() {
       <Section title="Tagihan Bulanan">
         {bills.length ? (
           <ul className="glass-card rounded-[18px] px-4">
-          {bills.map((b) => {
-            const days = daysUntil(b.dueDay);
-            const remaining = Math.max(b.amount - b.paid, 0);
-            const urgent = days <= 3;
-            return (
-              <li
-                key={b.id}
-                className="flex items-center gap-3 border-b border-outline-variant/20 py-3 last:border-0"
-              >
-                <span
-                  className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${
-                    urgent ? "bg-error/15 text-error" : "bg-primary-container/25 text-primary"
-                  }`}
+            {bills.map((b) => {
+              const days = daysUntil(b.dueDay);
+              const remaining = Math.max(b.amount - b.paid, 0);
+              const urgent = days <= 3;
+              return (
+                <li
+                  key={b.id}
+                  className="flex items-center gap-3 border-b border-outline-variant/20 py-3 last:border-0"
                 >
-                  <Icon name={b.icon} className="text-[18px]" fill={1} />
-                </span>
-                <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-                  <span className="truncate text-body font-medium text-on-surface">{b.name}</span>
-                  <span className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] leading-tight">
-                    <span
-                      className={urgent ? "font-semibold text-error" : "text-on-surface-variant"}
-                    >
-                      {days === 0 ? "Jatuh tempo hari ini" : `Jatuh tempo dalam ${days} hari`}
-                    </span>
-                    <span className="text-on-surface-variant/50">·</span>
-                    <span className="text-on-surface-variant/80">{`Tgl: ${b.dueDate}`}</span>
-                    <span className="text-on-surface-variant/50">·</span>
-                    <span className={remaining > 0 ? "text-on-surface-variant/80" : "text-success"}>
-                      {remaining > 0 ? `Kurang ${formatIDR(remaining)}` : "Target tercapai"}
-                    </span>
+                  <span
+                    className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${
+                      urgent ? "bg-error/15 text-error" : "bg-primary-container/25 text-primary"
+                    }`}
+                  >
+                    <Icon name={b.icon} className="text-[18px]" fill={1} />
                   </span>
-                </div>
-                <span className="shrink-0 text-body font-semibold text-on-surface">
-                  {formatIDR(b.amount)}
-                </span>
-              </li>
-            );
-          })}
+                  <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+                    <span className="truncate text-body font-medium text-on-surface">{b.name}</span>
+                    <span className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] leading-tight">
+                      <span
+                        className={urgent ? "font-semibold text-error" : "text-on-surface-variant"}
+                      >
+                        {days === 0 ? "Jatuh tempo hari ini" : `Jatuh tempo dalam ${days} hari`}
+                      </span>
+                      <span className="text-on-surface-variant/50">·</span>
+                      <span className="text-on-surface-variant/80">{`Tgl: ${b.dueDate}`}</span>
+                      <span className="text-on-surface-variant/50">·</span>
+                      <span
+                        className={remaining > 0 ? "text-on-surface-variant/80" : "text-success"}
+                      >
+                        {remaining > 0 ? `Kurang ${formatIDR(remaining)}` : "Target tercapai"}
+                      </span>
+                    </span>
+                  </div>
+                  <span className="shrink-0 text-body font-semibold text-on-surface">
+                    {formatIDR(b.amount)}
+                  </span>
+                </li>
+              );
+            })}
           </ul>
         ) : (
           <EmptyState
@@ -299,7 +301,9 @@ function Home() {
                 <div className="flex min-w-0 flex-1 flex-col">
                   <span className="truncate text-body font-medium text-on-surface">{w.name}</span>
                   <span className="text-meta text-on-surface-variant/80">
-                    {balance > 0 ? `${Math.round((w.balance / balance) * 100)}% dari total` : "0% dari total"}
+                    {balance > 0
+                      ? `${Math.round((w.balance / balance) * 100)}% dari total`
+                      : "0% dari total"}
                   </span>
                 </div>
                 <span className="shrink-0 text-body font-semibold text-on-surface">

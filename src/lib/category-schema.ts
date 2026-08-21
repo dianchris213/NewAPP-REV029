@@ -52,7 +52,12 @@ export const categoryQuerySchema = z
 export const walletIdSchema = z
   .unknown()
   .transform((value) => (typeof value === "string" ? value.trim() : ""))
-  .pipe(z.string().max(64).regex(/^[A-Za-z0-9_-]*$/, { message: "invalid-wallet" }));
+  .pipe(
+    z
+      .string()
+      .max(64)
+      .regex(/^[A-Za-z0-9_-]*$/, { message: "invalid-wallet" }),
+  );
 
 export const categoryInputSchema = z.object({
   name: categoryNameSchema,
