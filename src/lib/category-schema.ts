@@ -15,6 +15,8 @@ export const CATEGORY_NAME_MIN = 2;
 export const CATEGORY_NAME_MAX = 24;
 export const CATEGORY_QUERY_MAX = 40;
 
+// Control characters are matched deliberately: they are stripped from user input.
+// eslint-disable-next-line no-control-regex
 const CONTROL_CHARS = /[\u0000-\u001f\u007f-\u009f]/g;
 
 /** Trim, collapse inner whitespace and drop control characters. */
