@@ -12,9 +12,12 @@ const activeInfo = (page: Page) =>
 
 async function openWithKeyboard(page: Page) {
   const { row, sheet } = await openCategorySheet(page);
-  await row.focus();
-  await page.keyboard.press("Enter");
-  await expect(sheet).toBeVisible();
+  // Retry the keypress until hydration has attached the click handler.
+  await expect(async () => {
+    await row.focus();
+    await page.keyboard.press("Enter");
+    await expect(sheet).toBeVisible({ timeout: 1_000 });
+  }).toPass({ timeout: 15_000 });
   return sheet;
 }
 
