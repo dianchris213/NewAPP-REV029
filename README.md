@@ -81,6 +81,29 @@ bunx tsgo --noEmit
 bun run build
 ```
 
+## Testing (Playwright E2E)
+
+Browser-level suites live in `e2e/` and run against the dev server
+(`E2E_BASE_URL` overrides the base URL, default `http://localhost:8080`).
+Every test starts from a seeded, signed-in and category-free local state
+(`e2e/fixtures.ts`), so focus order and screenshots are deterministic.
+
+```sh
+bun run e2e           # run the suites
+bun run e2e:update    # refresh visual baselines on purpose
+bun run e2e:report    # open the last HTML report
+```
+
+- `e2e/category-keyboard.spec.ts` — Pengaturan > Kategori Transaksi keyboard
+  audit: Enter opens the sheet and moves focus inside it, Tab/Shift+Tab stay
+  trapped, the tab order is stable and reversible, Escape closes and restores
+  focus to the opener row.
+- `e2e/category-empty-state.spec.ts` — visual regression of the empty state,
+  with the baseline committed under `e2e/__screenshots__/`.
+
+On failure Playwright keeps a trace, screenshot, and video under
+`test-results/` (`bunx playwright show-trace <path>` to inspect).
+
 ## Built with
 
 - TanStack Start (TanStack Router)
