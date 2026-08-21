@@ -1,25 +1,15 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, openCategorySheet } from "./fixtures";
 
 /**
  * Visual regression for the empty state of Kategori Transaksi.
- * Run with `bun run e2e:update` to refresh the baseline on purpose.
+ * Refresh the baseline on purpose with `bun run e2e:update`.
  */
 test.describe("Kategori Transaksi — empty state", () => {
-  test.beforeEach(async ({ page }) => {
-    await page.addInitScript(() => {
-      window.localStorage.clear();
-    });
-  });
-
   test("matches the empty-state baseline", async ({ page }) => {
-    await page.goto("/settings", { waitUntil: "domcontentloaded" });
-    await page
-      .getByRole("button", { name: /kategori/i })
-      .first()
-      .click();
-
-    const sheet = page.getByTestId("category-sheet");
+    const { row, sheet } = await openCategorySheet(page);
+    await row.click();
     await expect(sheet).toBeVisible();
+    await expect(sheet.getByRole("heading", { level: 3 })).toBeVisible();
     await expect(sheet).toHaveScreenshot("category-empty-state.png");
   });
 });
