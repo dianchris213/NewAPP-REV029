@@ -341,17 +341,16 @@ function Home() {
  * Wallet card inside the horizontal swipe strip.
  * Memoized so swiping/scrolling never re-renders the whole strip.
  */
-const PocketCard = memo(function PocketCard({
-  name,
-  icon,
-  amount,
-  onOpen,
-}: {
+export type PocketCardProps = {
+  /** Wallet id — the value handed back to `onOpen`. */
+  id: string;
   name: string;
   icon: string;
   amount: number;
-  onOpen: (name: string) => void;
-}) {
+  onOpen: (id: string) => void;
+};
+
+const PocketCard = memo(function PocketCard({ id, name, icon, amount, onOpen }: PocketCardProps) {
   const startRef = useRef<{ x: number; y: number } | null>(null);
   return (
     <div
@@ -363,6 +362,7 @@ const PocketCard = memo(function PocketCard({
       <button
         type="button"
         data-testid={`pocket-trigger-${name}`}
+        data-pocket-id={id}
         onPointerDown={(e) => {
           startRef.current = { x: e.clientX, y: e.clientY };
         }}
@@ -373,7 +373,7 @@ const PocketCard = memo(function PocketCard({
           if (start && (Math.abs(e.clientX - start.x) > 8 || Math.abs(e.clientY - start.y) > 8)) {
             return;
           }
-          onOpen(name);
+          onOpen(id);
         }}
         aria-haspopup="dialog"
         aria-label={`Kantong ${name}, saldo ${formatIDR(amount)}`}
